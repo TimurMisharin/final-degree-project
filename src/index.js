@@ -16,7 +16,7 @@ app.use(express.static(publicDirectory))
 
 //connection with socket (each connection)
 /**
- * socket = client connection
+ * socket is client connection
  */
 io.on('connection', (socket) => {
     console.log('New WebSocket connection')
