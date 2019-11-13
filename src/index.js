@@ -65,23 +65,25 @@ app.get('/users/:id', async (req, res) => {
 /**
  * add new camera request
  */
-app.post('/new-camera', (req, res) => {
+app.post('/new-camera', async (req, res) => {
     const camera = new Camera(req.body)
 
-    camera.save().then(() => {
+    try {
+        await camera.save()
         res.status(201).send(camera)
-    }).catch((e) => {
-        res.status(400).send(e)
-    })
+    } catch (e) {
+        res.status(201).send(camera)
+    }
 })
 
-app.get('/all-cameras', (req, res) => {
-    Camera.find({}).then((cameras) => {
+app.get('/all-cameras', async (req, res) => {
+    try {
+        const cameras = await Camera.find({})
         res.status(200).send(cameras)
-    }).catch((e) => {
+    } catch (e) {
         console.log('db get all cameras error:', e)
         res.status(500).send()
-    })
+    }
 })
 
 
