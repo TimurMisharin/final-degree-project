@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 
-const Report = mongoose.model('Report', {
+const reportSchema = new mongoose.Schema({
     date: {
         type: Date,
         require: true
@@ -10,5 +10,7 @@ const Report = mongoose.model('Report', {
         type: String
     }
 })
+
+const Report = mongoose.model('Report', reportSchema)
 
 module.exports = Report

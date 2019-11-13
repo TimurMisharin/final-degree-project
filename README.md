@@ -1,3 +1,12 @@
 # final-degree-project
 
-run: npm i
+installation:
+    run: npm i
+
+Use:
+    Mongoose,
+    bcryptjs,
+    Mongodb,
+    socket.io,
+    and more...
+

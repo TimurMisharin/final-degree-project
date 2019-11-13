@@ -1,5 +1,5 @@
 const express = require('express')
-const User = require('../models/camera')
+const Camera = require('../models/camera')
 const router = new express.Router()
 
 
@@ -57,14 +57,18 @@ router.patch('/cameras/:id', async (req, res) => {
     const data = req.body
 
     try {
-        const camera = await Camera.findByIdAndUpdate(_id, data, {
-            new: true,
-            runValidators: true
-        })
+        const camera = await Camera.findByIdAndUpdate(_id)
 
         if (!camera) {
-            return res.status(404).send();
+            return res.status(404).send({
+                error: "Invalid updates!"
+            });
         }
+
+        updates.forEach((update) => camera[update] = data[update])
+
+        await camera.save()
+
         res.status(200).send(camera)
     } catch (e) {
         res.status(400).send(e)
