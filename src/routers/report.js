@@ -12,7 +12,7 @@ router.get('/reports', async (req, res) => {
         const reports = await Report.find({})
         res.status(200).send(reports)
     } catch (e) {
-        console.log('db get all reports error:', e)
+        console.log('db get all reports error:', e.message)
         res.status(500).send()
     }
 })
@@ -23,7 +23,7 @@ router.get('/reports/:id', async (req, res) => {
         const report = await Report.findById(_id)
         res.status(200).send(report)
     } catch (e) {
-        console.log('db get report error:', e)
+        console.log('db get report error:', e.message)
         res.status(500).send()
     }
 })
@@ -37,7 +37,7 @@ router.delete('/reports/:id', async (req, res) => {
         }
         res.status(200).send()
     } catch (e) {
-        console.log('db get delete user error:', e)
+        console.log('db get delete user error:', e.message)
         res.status(500).send()
     }
 })

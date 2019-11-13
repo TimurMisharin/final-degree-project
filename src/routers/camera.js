@@ -26,7 +26,7 @@ router.get('/cameras', async (req, res) => {
         const cameras = await Camera.find({})
         res.status(200).send(cameras)
     } catch (e) {
-        console.log('db get all cameras error:', e)
+        console.log('db get all cameras error:', e.message)
         res.status(500).send()
     }
 })
@@ -37,7 +37,7 @@ router.get('/cameras/:id', async (req, res) => {
         const camera = await Camera.findById(_id)
         res.status(200).send(camera)
     } catch (e) {
-        console.log('db get camera error:', e)
+        console.log('db get camera error:', e.message)
         res.status(500).send()
     }
 })
@@ -71,7 +71,8 @@ router.patch('/cameras/:id', async (req, res) => {
 
         res.status(200).send(camera)
     } catch (e) {
-        res.status(400).send(e)
+        console.log('camera update:',e.message)
+        res.status(400).send()
     }
 })
 
@@ -84,7 +85,7 @@ router.delete('/cameras/:id', async (req, res) => {
         }
         res.status(200).send()
     } catch (e) {
-        console.log('db get delete user error:', e)
+        console.log('db get delete user error:', e.message)
         res.status(500).send()
     }
 })

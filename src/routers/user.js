@@ -21,7 +21,18 @@ router.post('/users', async (req, res) => {
         await user.save()
         res.status(201).send(user)
     } catch (e) {
-        res.status(400).send(e)
+        console.log('create user:', e.message)
+        res.status(400).send()
+    }
+})
+
+router.post('/users/login', async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+        res.status(200).send(user)
+    } catch (e) {
+        console.log('User Login:', e.message)
+        res.status(400).send()
     }
 })
 
@@ -36,7 +47,7 @@ router.get('/users', async (req, res) => {
         const users = await User.find({});
         res.status(200).send(users)
     } catch (e) {
-        console.log('db get users error:', e)
+        console.log('db get users error:', e.message)
         res.status(500).send()
     }
 })
@@ -50,7 +61,7 @@ router.get('/users/:id', async (req, res) => {
         }
         res.status(200).send(user)
     } catch (e) {
-        console.log('db get user error:', e)
+        console.log('db get user error:', e.message)
         res.status(500).send()
     }
 })
@@ -81,7 +92,8 @@ router.patch('/users/:id', async (req, res) => {
 
         res.status(200).send(user)
     } catch (e) {
-        res.status(400).send(e)
+        console.log('user update:',e.message)
+        res.status(400).send()
     }
 })
 
@@ -95,7 +107,7 @@ router.delete('/users/:id', async (req, res) => {
         }
         res.status(200).send()
     } catch (e) {
-        console.log('db get delete user error:', e)
+        console.log('db get delete user error:', e.message)
         res.status(500).send()
     }
 })
