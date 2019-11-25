@@ -18,12 +18,14 @@ const port = process.env.PORT || 3000
 const publicDirectory = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectory))
-app.use(express.json())
 
+
+
+
+app.use(express.json())
 app.use(userRouter)
 app.use(cameraRouter)
 app.use(reportRouter)
-
 
 //connection with socket (each connection)
 /**
