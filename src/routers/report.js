@@ -1,5 +1,6 @@
 const express = require('express')
 const Report = require('../models/report')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 
 
@@ -7,7 +8,26 @@ const router = new express.Router()
  * Reports
  */
 
-router.get('/reports', async (req, res) => {
+// add new report
+router.post('/reports', auth, async (req, res) => {
+    // create new report and copy all info from body
+    const report = new Report({
+        ...req.body,
+        owner: req.user._id
+    })
+
+    try {
+        // save to db
+        await report.save()
+        res.status(201).send(report)
+    } catch (e) {
+        console.log('New report:', e.message)
+        res.status(400).send()
+    }
+})
+
+
+router.get('/reports', auth, async (req, res) => {
     try {
         const reports = await Report.find({})
         res.status(200).send(reports)
@@ -17,7 +37,7 @@ router.get('/reports', async (req, res) => {
     }
 })
 
-router.get('/reports/:id', async (req, res) => {
+router.get('/reports/:id', auth, async (req, res) => {
     const _id = req.params.id
     try {
         const report = await Report.findById(_id)

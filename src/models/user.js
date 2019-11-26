@@ -6,17 +6,17 @@ const jwt = require('jsonwebtoken')
 const userSchema = new mongoose.Schema({
     first_name: {
         type: String,
-        require: true,
+        required: true,
         trim: true
     },
     last_name: {
         type: String,
-        require: true,
+        required: true,
         trim: true
     },
     password: {
         type: String,
-        require: true,
+        required: true,
         minlength: 6,
         trim: true,
         validate(value) {
@@ -27,11 +27,11 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: Number,
-        require: true,
+        required: true,
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         trim: true,
         lowercase: true,
         unique: true,
@@ -48,9 +48,16 @@ const userSchema = new mongoose.Schema({
     tokens: [{
         token: {
             type: String,
-            require: true
+            required: true
         }
     }]
+})
+
+// rs for report scheme
+userSchema.virtual('reports', {
+    ref: 'Report',
+    localField: '_id',
+    foreignField: 'owner'
 })
 
 userSchema.methods.toJSON = function () {
