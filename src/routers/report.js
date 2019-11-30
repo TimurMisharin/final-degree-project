@@ -29,8 +29,8 @@ router.post('/reports', auth, async (req, res) => {
 
 router.get('/reports', auth, async (req, res) => {
     try {
-        const reports = await Report.find({})
-        res.status(200).send(reports)
+        await req.user.populate('reports').execPopulate()
+        res.status(200).send(req.user.reports)
     } catch (e) {
         console.log('db get all reports error:', e.message)
         res.status(500).send()
@@ -38,9 +38,14 @@ router.get('/reports', auth, async (req, res) => {
 })
 
 router.get('/reports/:id', auth, async (req, res) => {
-    const _id = req.params.id
     try {
-        const report = await Report.findById(_id)
+        const report = await Report.findOne({
+            _id: req.params.id,
+            owner: req.user._id
+        })
+        if (!report) {
+            return res.status(404).send()
+        }
         res.status(200).send(report)
     } catch (e) {
         console.log('db get report error:', e.message)
@@ -48,10 +53,12 @@ router.get('/reports/:id', auth, async (req, res) => {
     }
 })
 
-router.delete('/reports/:id', async (req, res) => {
-    const _id = req.params.id
+router.delete('/reports/:id', auth, async (req, res) => {
     try {
-        const report = await Report.findByIdAndDelete(_id)
+        const report = await Report.findByIdAndDelete({
+            _id: req.params.id,
+            owner: req.user._id
+        })
         if (!report) {
             return res.status(404).send()
         }
