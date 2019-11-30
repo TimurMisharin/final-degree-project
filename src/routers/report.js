@@ -34,17 +34,20 @@ router.get('/reports', auth, async (req, res) => {
         let limit = parseInt(req.query.limit)
         // skip for some page
         let skip = parseInt(req.query.skip)
-        if (limit < 1 || !limit) {
+        if (!limit || limit < 1) {
             limit = 5
         }
-        if (!skip) {
+        if (!skip || skip < 0) {
             skip = 0
         }
         await req.user.populate({
             path: 'reports',
             options: {
                 limit,
-                skip
+                skip,
+                sort: {
+                    createdAt: -1
+                }
             }
         }).execPopulate()
         res.status(200).send(req.user.reports)
