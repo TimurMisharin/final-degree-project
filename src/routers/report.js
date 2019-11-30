@@ -29,7 +29,24 @@ router.post('/reports', auth, async (req, res) => {
 
 router.get('/reports', auth, async (req, res) => {
     try {
-        await req.user.populate('reports').execPopulate()
+        //pagination
+        //limit of reports per page
+        let limit = parseInt(req.query.limit)
+        // skip for some page
+        let skip = parseInt(req.query.skip)
+        if (limit < 1 || !limit) {
+            limit = 5
+        }
+        if (!skip) {
+            skip = 0
+        }
+        await req.user.populate({
+            path: 'reports',
+            options: {
+                limit,
+                skip
+            }
+        }).execPopulate()
         res.status(200).send(req.user.reports)
     } catch (e) {
         console.log('db get all reports error:', e.message)
