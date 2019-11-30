@@ -1,5 +1,6 @@
 const express = require('express')
 const Camera = require('../models/camera')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 
 
@@ -10,7 +11,7 @@ const router = new express.Router()
 /**
  * add new camera request
  */
-router.post('/cameras', async (req, res) => {
+router.post('/cameras', auth, async (req, res) => {
     const camera = new Camera(req.body)
 
     try {
@@ -21,7 +22,7 @@ router.post('/cameras', async (req, res) => {
     }
 })
 
-router.get('/cameras', async (req, res) => {
+router.get('/cameras', auth, async (req, res) => {
     try {
         const cameras = await Camera.find({})
         res.status(200).send(cameras)
@@ -31,7 +32,7 @@ router.get('/cameras', async (req, res) => {
     }
 })
 
-router.get('/cameras/:id', async (req, res) => {
+router.get('/cameras/:id', auth, async (req, res) => {
     const _id = req.params.id
     try {
         const camera = await Camera.findById(_id)
@@ -42,7 +43,7 @@ router.get('/cameras/:id', async (req, res) => {
     }
 })
 
-router.patch('/cameras/:id', async (req, res) => {
+router.patch('/cameras/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -71,7 +72,7 @@ router.patch('/cameras/:id', async (req, res) => {
 
         res.status(200).send(camera)
     } catch (e) {
-        console.log('camera update:',e.message)
+        console.log('camera update:', e.message)
         res.status(400).send()
     }
 })

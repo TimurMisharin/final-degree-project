@@ -17,6 +17,8 @@ const cameraSchema = new mongoose.Schema({
         type: String,
         require: true
     }
+}, {
+    timestamps: true
 })
 
 cameraSchema.pre('save', async function (next) {

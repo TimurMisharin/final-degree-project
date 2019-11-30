@@ -15,6 +15,8 @@ const reportSchema = new mongoose.Schema({
         // create rs with user
         ref: 'User'
     }
+}, {
+    timestamps: true
 })
 
 const Report = mongoose.model('Report', reportSchema)
