@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
         //take token
         const token = req.header('Authorization').replace('Bearer ', '')
         // check token
-        const decoded = jwt.verify(token, 'qawsedrf')
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
         // find user with this token
         const user = await User.findOne({
             _id: decoded._id,

@@ -1,7 +1,6 @@
 const sgMail = require('@sendgrid/mail')
-const sendgridAPIKey = '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'
 
-sgMail.setApiKey(sendgridAPIKey)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendWelcomeEmail = (email, name) => {
     sgMail.send({
@@ -13,7 +12,12 @@ const sendWelcomeEmail = (email, name) => {
 }
 
 const sendFallDetectedEmail = (email) => {
-    //TODO
+    sgMail.send({
+        to: email,
+        from: 'timormi@ac.sce.ac.il',
+        subject: 'Falling Detected!!',
+        text: `Check if all right!`
+    })
 }
 
 
