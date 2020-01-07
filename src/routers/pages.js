@@ -21,6 +21,12 @@ router.get('/register', (req, res) => {
     })
 })
 
+router.get('/home', (req,res)=>{
+    res.render('home',{
+       title:'Welcome' 
+    })
+})
+
 
 
 

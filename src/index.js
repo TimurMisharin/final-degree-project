@@ -7,7 +7,6 @@ const hbs = require('hbs')
 
 require('./db/mongoose')
 const userRouter = require('./routers/user')
-const cameraRouter = require('./routers/camera')
 const reportRouter = require('./routers/report')
 const pagesRouter = require('./routers/pages')
 
@@ -36,7 +35,6 @@ app.use(express.static(publicDirectory))
 
 app.use(express.json())
 app.use(userRouter)
-app.use(cameraRouter)
 app.use(reportRouter)
 app.use(pagesRouter)
 

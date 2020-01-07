@@ -16,7 +16,8 @@ const router = new express.Router()
 /**
  * register user request
  */
-router.post('/users', async (req, res) => {
+router.post('/register', async (req, res) => {
+    console.log(req.body)
     /**
      * create user by params from fronend
      */

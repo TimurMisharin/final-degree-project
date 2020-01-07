@@ -11,33 +11,17 @@
 
 <body>
     {{>header}}
-    <form id="register_form">
-        <label>
-            First Name
-        </label>
+    <form>
         <input id="fname" type="text" name="first_name" placeholder="First Name" required>
-        <label>
-            Last Name
-        </label>
         <input id="lname" type="text" name="last_name" placeholder="Last Name" required>
-        <label>
-            Password
-        </label>
         <input id="password" type="password" name="password" placeholder="password" required>
-        <label>
-            Phone Number
-        </label>
         <input id="phone" type="number" name="phone" placeholder="Phone number" required>
-        <label>
-            eMail
-        </label>
         <input id="email" type="email" name="email" placeholder="eMail" required>
-        <button>
-            Register
-        </button>
+        <button type="submit">Submit</button> 
     </form>
 </body>
 {{>footer}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="js/register.js"></script>
 
 </html>
