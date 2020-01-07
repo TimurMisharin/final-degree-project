@@ -16,18 +16,17 @@ const sendData = () => {
         target_name: 'Grandmo'
     }
     console.log(data)
-    axios.post('http://localhost:3000/register',data,
-    {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(function(response){
-        console.log(response)
-    })
-    .catch(function(error){
-        console.log(error)
-    })
+    axios.post('http://localhost:3000/users', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function (response) {
+            console.log(response)
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
 }
 
 registerForm.addEventListener('submit', sendData)
