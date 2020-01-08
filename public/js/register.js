@@ -1,6 +1,7 @@
 const registerForm = document.querySelector('form')
 
-const sendData = () => {
+const sendData = (e) => {
+    e.preventDefault();
     const fname = document.getElementById('fname').value
     const lname = document.getElementById('lname').value
     const password = document.getElementById('password').value
