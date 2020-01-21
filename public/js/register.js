@@ -7,7 +7,6 @@ const sendData = (e) => {
     const password = document.getElementById('password').value
     const phone = document.getElementById('phone').value
     const email = document.getElementById('email').value
-    // const data = `first_name=${fname}&last_name=${lname}&password=${password}&phone=${phone}&email=${email}&target_name=Grandmo`
     const data = {
         first_name: fname,
         last_name: lname,
@@ -16,14 +15,15 @@ const sendData = (e) => {
         email: email,
         target_name: 'Grandmo'
     }
-    console.log(data)
-    axios.post('http://localhost:3000/users', data, {
+    axios.post('/users', data, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
         .then(function (response) {
             console.log(response)
+            Cookies.set('JWT',`Bearer ${response.data.token}`)
+            window.location.href="/home"
         })
         .catch(function (error) {
             console.log(error)

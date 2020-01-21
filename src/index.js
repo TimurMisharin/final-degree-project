@@ -3,7 +3,7 @@ const http = require('http')
 const express = require('express')
 const socketio = require('socket.io')
 const hbs = require('hbs')
-
+const cookieParser = require('cookie-parser')
 
 require('./db/mongoose')
 const userRouter = require('./routers/user')
@@ -11,6 +11,7 @@ const reportRouter = require('./routers/report')
 const pagesRouter = require('./routers/pages')
 
 const app = express()
+app.use(cookieParser())
 const server = http.createServer(app)
 const io = socketio(server)
 

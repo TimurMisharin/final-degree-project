@@ -17,7 +17,6 @@ const router = new express.Router()
  * register user request
  */
 router.post('/users', async (req, res) => {
-    console.log(req.body)
     /**
      * create user by params from fronend
      */
@@ -41,6 +40,7 @@ router.post('/users', async (req, res) => {
 
 router.post('/users/login', async (req, res) => {
     try {
+        console.log(req.body.email)
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
         res.status(200).send({

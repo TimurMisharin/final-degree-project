@@ -1,10 +1,20 @@
-
 <header>
     <div class="header">
         <a class="logo">
             {{title}}
         </a>
         <div class="header-right">
+            {{#if login}}
+            <a href="/home">
+                Home
+            </a>
+            <a href="/stream">
+                Stream
+            </a>
+            <a id="logout" type="button" href="javascript:void(0);">
+                Logout
+            </a>
+            {{else}}
             <a href="/">
                 Home
             </a>
@@ -14,6 +24,7 @@
             <a href="/login">
                 Login
             </a>
+            {{/if}}
         </div>
     </div>
 </header>
