@@ -2,7 +2,9 @@ const express = require('express')
 const Report = require('../models/report')
 const auth = require('../middleware/auth')
 const router = new express.Router()
-
+const {
+    sendFallDetectedEmail
+} = require('../emails/account')
 
 /**
  * Reports
@@ -15,6 +17,7 @@ router.post('/reports', auth, async (req, res) => {
         ...req.body,
         owner: req.user._id
     })
+    sendFallDetectedEmail(req.user.email, req.body, req.user.target_name)
 
     try {
         // save to db

@@ -1,7 +1,6 @@
 const path = require('path')
 const http = require('http')
 const express = require('express')
-const socketio = require('socket.io')
 const hbs = require('hbs')
 const cookieParser = require('cookie-parser')
 
@@ -12,8 +11,7 @@ const pagesRouter = require('./routers/pages')
 
 const app = express()
 app.use(cookieParser())
-const server = http.createServer(app)
-const io = socketio(server)
+
 
 //port to listen
 const port = process.env.PORT
@@ -32,28 +30,13 @@ hbs.registerPartials(partialsPath)
 app.use(express.static(publicDirectory))
 
 
-
-
 app.use(express.json())
 app.use(userRouter)
 app.use(reportRouter)
 app.use(pagesRouter)
 
-//connection with socket (each connection)
-/**
- * socket is client connection
- */
-io.on('connection', (socket) => {
-    console.log('New WebSocket connection')
-
-    socket.on('falled', (data) => {
-        //send data to client. 
-        console.log(data);
-        socket.emit('reported')
-    })
-})
 
 //run server
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server is up on port ${port}`)
 })
