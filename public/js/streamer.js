@@ -1,13 +1,6 @@
 const resMsg = document.querySelector('#msg')
 
-let video;
-let poseNet;
-let noseX = 0;
-let noseY = 0;
-let eyelX = 0;
-let eyelY = 0;
-
-function sendReport() {
+sendReport = () => {
   axios.post('/reports', {
       description: `Fall Detected in: ${new Date()}`
     }, {
@@ -23,59 +16,80 @@ function sendReport() {
     })
 }
 
-function setup() {
-  createCanvas(640, 480);
-  video = createCapture(VIDEO);
+// Grab elements, create settings, etc.
+var video = document.getElementById('video');
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
 
-  video.hide();
-  poseNet = ml5.poseNet(video, modelReady);
-  poseNet.on('pose', gotPoses);
+// The detected positions will be inside an array
+let poses = [];
+
+// Create a webcam capture
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({
+    video: true
+  }).then(function (stream) {
+    video.srcObject = stream;
+    video.play();
+  });
+}
+
+// A function to draw the video and poses into the canvas.
+// This function is independent of the result of posenet
+// This way the video will not seem slow if poseNet 
+// is not detecting a position
+function drawCameraIntoCanvas() {
+  // Draw the video element into the canvas
+  ctx.drawImage(video, 0, 0, 640, 480);
+  // We can call both functions to draw all keypoints and the skeletons
+  drawKeypoints();
+  // drawSkeleton();
+  window.requestAnimationFrame(drawCameraIntoCanvas);
+}
+// Loop over the drawCameraIntoCanvas function
+drawCameraIntoCanvas();
+
+// Create a new poseNet method with a single detection
+const poseNet = ml5.poseNet(video, modelReady);
+poseNet.on('pose', gotPoses);
+
+// A function that gets called every time there's an update from the model
+function gotPoses(results) {
+  poses = results;
 }
 
 function modelReady() {
-  console.log('model ready!')
+  console.log("model ready")
+  poseNet.multiPose(video)
 }
 
-const frames = [];
-
-function gotPoses(poses) {
-  if (poses.length > 0) {
-    const nX = poses[0].pose.keypoints[0].position.x;
-    const nY = poses[0].pose.keypoints[0].position.y;
-    const eX = poses[0].pose.keypoints[1].position.x;
-    const eY = poses[0].pose.keypoints[1].position.y;
-    noseX = lerp(noseX, nX, 0.5);
-    noseY = lerp(noseY, nY, 0.5);
-    eyelX = lerp(eyelX, eX, 0.5);
-    eyelY = lerp(eyelY, eY, 0.5);
+let frames = [];
+// A function to draw ellipses over the detected keypoints
+function drawKeypoints() {
+  // Loop through all the poses detected
+  for (let i = 0; i < poses.length; i++) {
+    // For each pose detected, loop through all the keypoints
+    for (let j = 0; j < poses[i].pose.keypoints.length; j++) {
+      let keypoint = poses[i].pose.keypoints[j];
+      // Only draw an ellipse is the pose probability is bigger than 0.2
+      // console.log(keypoint.score)
+      // console.log(keypoint.part)
+      if (keypoint.part === 'nose') {
+        frames.push(keypoint.position.x)
+        console.log(keypoint.position.x)
+        if (frames.length > 3) {
+          if (frames[frames.length - 2] - frames[frames.length - 1] > 100) {
+            alert('ALL')
+            sendReport()
+            frames = [];
+          }
+        }
+      }
+      if (keypoint.score > 0.2) {
+        ctx.beginPath();
+        ctx.arc(keypoint.position.x, keypoint.position.y, 10, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+    }
   }
 }
-
-// function gotPoses(poses) {
-
-// if (poses.length > 0) {
-
-//   let eX = poses[0].pose.keypoints[1].position.x;
-//   let eY = poses[0].pose.keypoints[1].position.y;
-//   frames.push(nY);
-//   if (frames.length > 3) {
-//     if (frames[frames.length - 1] - frames[frames.length - 2] > 50) {
-//         sendReport();
-//     }
-//     noseX = lerp(noseX, nX, 0.5);
-//     noseY = lerp(noseY, nY, 0.5);
-//     eyelX = lerp(eyelX, eX, 0.5);
-//     eyelY = lerp(eyelY, eY, 0.5);
-//   }
-// }
-
-
-function draw() {
-  image(video, 0, 0);
-  const d = dist(noseX, noseY, eyelX, eyelY);
-  console.log(d)
-  fill(255, 0, 0);
-  ellipse(noseX, noseY, 50);
-
-}
-// }
