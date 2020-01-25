@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -24,6 +24,50 @@
 </body>
 {{>footer}}
 
+<script src="js/streamer.js"></script>
+
+</html> --}}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initical-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        {{title}}
+    </title>
+    <link rel="icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="css/styles.css">
+
+
+</head>
+
+<body>
+    {{>header}}
+    {{!-- <div id="msg">
+
+    </div> --}}
+    {{!-- <canvas id="canvas" width="640" height="480"></canvas>
+ 
+   <video id="video" width="640" height="480" autoplay style="display: none"></video> --}}
+
+     <p>
+                    <button id="addClassA">Add an Example of a fall</button>
+                    <button id="addClassB">Add an Example of walking</button>
+                    <button id="addClassC">Add an Example of a static state</button>
+                    </p>
+                    <button id="savee">Save Dataset</button>
+                      <button id="load">load Dataset</button>
+                                    <button id="buttonPredict">Start predicting!</button>
+
+
+</body>
+{{>footer}}
+    <script src="assets/p5.min.js"></script>
+    <script src="assets/ml5.min.js"></script>
 <script src="js/streamer.js"></script>
 
 </html>
